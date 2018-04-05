@@ -1,14 +1,110 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>
+          My App
+        </ion-title>
+        <ion-buttons end>
+            <button (click)="add()">
+                <ion-icon primary name="md-add-circle"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+    <ion-card *ngIf="showingWelcome == true">
+        <ion-card-header>
+            Information
+        </ion-card-header>
+        <ion-card-content>
+            <p>
+                This is a app with various ionic features. Click <strong>ADD</strong> to create your product list.
+                If you choose to <strong>dismiss</strong> this notification, it will
+                not be shown again for this session.  No data
+                is persisted in this application after you close the app.
+                This App uses <strong>Ionic Native plugins</strong>.Please try to test it as a Mobile App.
+            </p>
+            <ion-buttons end>
+                <button primary (click)="dismissWelcome()">
+                    Dismiss!!
+                </button>
+            </ion-buttons>
+        </ion-card-content>
+    </ion-card>
+    <ion-list>
+      <ion-item>
+        ProductName
+        <ion-note >
+            Product list will be displayed below this line after you add.
+        </ion-note>
+      </ion-item>
+        <ion-item *ngFor="let product of myProvider.productList">
+            {{product.name}}
+            <!-- <ion-note >
+                {{product.price}}
+            </ion-note> -->
+            <button item-right ion-button color="secondary" (click)="presentAlert(product.name,product.price,product.quantity)">DETAILS</button>
+
+          <button item-right ion-button color="secondary" (click)="presentActionSheet(product.name,product.price)">DELETE</button>
+
+        </ion-item>
+
+    </ion-list>
+    <ion-item>
+        <ion-label text-center >Insert details below to check it out on next page!</ion-label>
+    </ion-item>
+    <ion-list>
+    <ion-item>
+      <ion-label>Enter</ion-label>
+      <ion-input placeholder='Your fav color...' #color></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Enter</ion-label>
+      <ion-input placeholder='Your Name...' #name></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Enter</ion-label>
+      <ion-input placeholder='Your Age...' #age></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Enter</ion-label>
+      <ion-input placeholder='Your higest degree...' #degree></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button full color="secondary" (click)="goTo(color.value,name.value,age.value,degree.value)">SAVE</button>
+    <button ion-button full [navPush]="aboutPage">ABOUT ME</button>
+    <button ion-button full [navPush]="CanvasPage">Check my Canvas Image</button>
+    <ion-item>
+        <ion-label text-center >Check out the Google places API below to search palces!</ion-label>
+    </ion-item>
+    <ion-item>
+<ion-label>Select Place</ion-label>
+  <ion-select [(ngModel)]="isType" (ionChange)="nearbyPlace()">
+  <ion-option value="">Select</ion-option>
+  	<ion-option value="hospital">Hospital</ion-option>
+  	<ion-option value="restaurant">Restaurant</ion-option>
+  	<ion-option value="bank">Bank</ion-option>
+  	<ion-option value="airport">Airport</ion-option>
+  	<ion-option value="library">Library</ion-option>
+  	<ion-option value="gym">Gym</ion-option>
+	<ion-option value="atm">Atm</ion-option>
+	<ion-option value="shopping_mall">Shopping Mall</ion-option>
+	<ion-option value="police">Police Station</ion-option>
+	<ion-option value="zoo">Zoo</ion-option>
+  </ion-select>
+</ion-item>
+
+<ion-item>
+<ion-label>Select Distance</ion-label>
+  <ion-select [(ngModel)]="isKM" (ionChange)="nearbyPlace()">
+  <ion-option value="500">Select</ion-option>
+  	<ion-option value="2000">2 Miles</ion-option>
+  	<ion-option value="4000">4 Miles</ion-option>
+  	<ion-option value="6000">6 Miles</ion-option>
+  	<ion-option value="8000">8 Miles</ion-option>
+  </ion-select>
+</ion-item>
+<ion-item>
+  <div #map id="map"></div>
+</ion-item>
 </ion-content>
